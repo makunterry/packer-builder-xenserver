@@ -109,7 +109,7 @@ func (self *stepCreateInstance) Run(state multistep.StateBag) multistep.StepActi
 
 	var network *xsclient.Network
 
-	if len(config.NetworkName) == 0 {
+	if len(config.NetworkNames) == 0 {
 		// No network has be specified. Use the management interface
 		network = new(xsclient.Network)
 		network.Ref = ""
@@ -149,7 +149,7 @@ func (self *stepCreateInstance) Run(state multistep.StateBag) multistep.StepActi
 
 	} else {
 		// Look up each network by it's name label
-		for vif, networkNameLabel := range config.NetworkName {
+		for i, networkNameLabel := range config.NetworkNames {
 			networks, err := client.GetNetworkByNameLabel(networkNameLabel)
 
 			if err != nil {
@@ -167,8 +167,8 @@ func (self *stepCreateInstance) Run(state multistep.StateBag) multistep.StepActi
 			}
 
 			//we need the VIF index string
-			vifStr := fmt.Sprintf("%d", vif)
-			_, err = instance.ConnectNetwork(networks[0], vifStr)
+			vifIndexString := fmt.Sprintf("%d", i)
+			_, err = instance.ConnectNetwork(networks[0], vifIndexString)
 
 			if err != nil {
 				ui.Say(err.Error())

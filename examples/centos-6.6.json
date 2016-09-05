@@ -18,7 +18,7 @@
       "vm_other_config": {
           "conversionvm":"true"
       },
-      "network_name": [
+      "network_names": [
           "Host internal management network",
           "Pool-wide network associated with eth0"
       ],
